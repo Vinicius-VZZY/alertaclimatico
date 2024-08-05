@@ -74,7 +74,53 @@ address_descriptor_result = gmaps.reverse_geocode((40.714224, -73.961452), enabl
 
 
 
-### Tema
+### cep via 
+via cep define a localizaçao da busca do usuario 
+```
+import requests
+
+api_key = "a17aa54959a46a52dc3c4a2508cbc211"
+cidade = "recife"
+link = f"https://api.openweathermap.org/data/2.5/weather?q={cidade}&appid={api_key}&lang=pt_br"
+
+# Faz a requisição
+requisicao = requests.get(link)
+
+# Verifica o status da requisição
+if requisicao.status_code == 200:
+    dados = requisicao.json()
+    print("Dados do tempo:", dados)
+elif requisicao.status_code == 400:
+    print("Requisição incorreta. Verifique a URL e parâmetros.")
+elif requisicao.status_code == 401:
+    print("Credenciais inválidas. Verifique sua chave API.")
+elif requisicao.status_code == 404:
+    print("Cidade não encontrada. Verifique o nome da cidade.")
+else:
+    print(f"Erro inesperado: {requisicao.status_code}")
+print(requisicao.json())
+
+requisicao_dic = requisicao.json()
+
+descricao = requisicao_dic['weather'][0]['description']
+
+temperatura = requisicao_dic['main']['temp']
+print ('description', temperatura)
+
+cidade = "recife"
+link = f"https://api.openweathermap.org/data/2.5/weather?q={cidade}&appid={api_key}&lang=pt_br"
+requisicao = requests.get(link)
+requisicao_dic = requisicao.json()
+
+# descricao = requisicao_dic['weatrer'][0]['description']
+pritemperatura = requisicao_dic['main']['temp'] - 289.15
+print('descricao', temperatura)
+
+print(descricao, round(temperatura,2))
+
+print(descricao, f'{round(temperatura,2)}°C')
+```
+
 
 
 
