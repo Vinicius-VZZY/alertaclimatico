@@ -1,7 +1,7 @@
 
 # Projeto de Desenvolvimento da Aplicação de Monitoramento, Alerta e Reporte de Condições Climáticas
 
-####Uma breve descrição sobre o que esse projeto faz e para quem ele é:
+#### Uma breve descrição sobre o que esse projeto faz e para quem ele é:
 
 Essa aplicação tem como função integrar alertas climáticos e localização GPS de maneira interativa para o usuário ter a função Criar Reportes indicando locais onde podem estar ocorrendos deslisamentos, alagamentos, queda de árvores ou de postes de eletricidade/telefonia, etc. Utilizando, e com isso atualizando, os banco de dados de áreas de risco e locais de maior incindência de alagamentos ou deslisamentos que estejam disponíveis ao público pela defesa civil e órgãos de serviços emergenciais. O objetivo é facilitar a divulgação de alertas de emergências climáticas com alertas e notificações para regiões definidas pelo usuário. 
 
@@ -40,7 +40,37 @@ Baseado no que vimos em sala decidimos usar para armazenar e validar os dados de
 
 
 
-### Tema
+### Google Maps API
+Google maps é a API de mapas escolhida pelo grupo para exibir ao usuário, na interface, o retorno da pesquisa da localidade escolhida.
+```
+import googlemaps
+from datetime import datetime
+
+gmaps = googlemaps.Client(key='Add Your Key here')
+
+# Geocoding an address
+geocode_result = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
+
+# Look up an address with reverse geocoding
+reverse_geocode_result = gmaps.reverse_geocode((40.714224, -73.961452))
+
+# Request directions via public transit
+now = datetime.now()
+directions_result = gmaps.directions("Sydney Town Hall",
+                                     "Parramatta, NSW",
+                                     mode="transit",
+                                     departure_time=now)
+
+# Validate an address with address validation
+addressvalidation_result =  gmaps.addressvalidation(['1600 Amphitheatre Pk'], 
+                                                    regionCode='US',
+                                                    locality='Mountain View', 
+                                                    enableUspsCass=True)
+
+# Get an Address Descriptor of a location in the reverse geocoding response
+address_descriptor_result = gmaps.reverse_geocode((40.714224, -73.961452), enable_address_descriptor=True)
+```
+
 
 
 
