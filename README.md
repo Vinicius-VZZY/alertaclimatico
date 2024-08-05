@@ -9,7 +9,7 @@ Essa aplicação tem como função integrar alertas climáticos e localização 
 Nessa aplicação tivemos a ideia de usar o framework Flask para criar um servidor que use os processos API RESTful de método CRUD para armazenar os dados de cadastro dos usuários (pela limitação da equipe/turma no assunto Banco de Dados, essa será uma implementação posterior do projeto). E optamos pela biblioteca Tkinter para criar uma interface gráfica responsiva para o uso. 
 
 ### Tkinter
-#### Vincius Urquiza
+
 Este script é uma simples aplicação gráfica usando a biblioteca tkinter do Python. Ela é dividida em três telas: "Login", "Início" e "Cadastro".
 
 Na tela "Login", o usuário pode inserir seu nome de usuário e senha para realizar o login. Caso o usuário ainda não tenha cadastro, ele pode clicar no botão "Cadastre-se" para ser redirecionado para a tela de cadastro.
@@ -32,7 +32,7 @@ tkinter.messagebox: para exibir mensagens de alerta ou informação
 Para realizar a lógica de negócio, como validar os dados de login ou cadastro, é necessário adicionar a lógica nos métodos login, cadastrar_usuario e cadastrar.# alertaclimatico
 
 ### Flask
-#### Vinicius Urquiza
+
 
 Baseado no que vimos em sala decidimos usar para armazenar e validar os dados de cadastro e de incidentes um servidor Flask aplicando o método CRUD. 
 
@@ -41,25 +41,19 @@ Baseado no que vimos em sala decidimos usar para armazenar e validar os dados de
 
 
 ### Tema
-#### Nome
 
 
 
 ### Tema
-#### Nome
 
 
 
 ### Tema
-#### Nome
+
 
 
 
 
 ### Tema
-#### Nome
-
-
 
 ### Tema
-#### Nome

@@ -3,6 +3,8 @@ import re
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import messagebox
+from PIL import Image, ImageTk
+import io
 
 # Executar a interface Tkinter no processo principal
 janela = tk.Tk()
@@ -35,6 +37,7 @@ resultados = tk.Frame(notebook)
 notebook.add(login, text="Login")
 notebook.add(cadastro, text="Cadastro")
 notebook.add(inicio, text="Início")
+notebook.add(resultados, text="Resultados")
 
 # Variáveis globais
 entry_usuario = None
@@ -44,6 +47,7 @@ entry_telefone = None
 entry_cpf = None
 entry_endereco = None
 entry_senha = None
+mapa_label = None
 
 # Label e entrada para Login
 def tela_login():
@@ -79,6 +83,58 @@ def tela_login():
 
 tela_login()
 
+def tela_inicio():
+    # Criar uma entrada para o CEP
+    cep_label = tk.Label(inicio, text="CEP:")
+    cep_label.pack()
+    cep_entry = tk.Entry(inicio, width=20)
+    cep_entry.pack()
+
+    # Criar um botão para consultar o CEP
+    def consultar_cep():
+        cep = cep_entry.get()
+        if cep:
+            # Fazer uma solicitação HTTP para a API ViaCEP
+            response = requests.get(f"https://viacep.com.br/ws/{cep}/json/")
+            if response.status_code == 200:
+                # Processar a resposta JSON
+                data = response.json()
+
+                # Exibir os resultados
+                for widget in resultados.winfo_children():
+                    widget.destroy()
+
+                endereco_label = tk.Label(resultados, text=f"Endereço: {data['logradouro']}, {data['bairro']}, {data['localidade']} - {data['uf']} ")
+                endereco_label.pack()
+
+                # Redirecionar para a aba resultados
+                notebook.select(resultados)
+
+                # Exibir o mapa usando Google Maps API
+                if "logradouro" in data and "localidade" in data:
+                    endereco = f"{data['logradouro']}, {data['bairro']}, {data['localidade']} - {data['uf']}"
+                    mapa_url = f"https://maps.googleapis.com/maps/api/staticmap?center={endereco}&zoom=15&size=600x300&maptype=roadmap&markers=color:red%7Clabel:C%7C{endereco}&key=AIzaSyC0fPJQ5bahRDo3Hsv6x9xb05oB7HDXr9Q"
+                    response = requests.get(mapa_url)
+
+                    if response.status_code == 200:
+                        mapa_image = Image.open(io.BytesIO(response.content))
+                        mapa_photo = ImageTk.PhotoImage(mapa_image)
+
+                        global mapa_label
+                        mapa_label = tk.Label(resultados, image=mapa_photo)
+                        mapa_label.image = mapa_photo
+                        mapa_label.pack()
+                    else:
+                        tk.Label(resultados, text="Erro ao carregar o mapa.").pack()
+                else:
+                    tk.Label(resultados, text="Endereço não encontrado.").pack()
+            else:
+                messagebox.showerror("Erro", "Erro ao consultar o CEP", icon="error", parent=janela)
+
+    consultar_button = tk.Button(inicio, text="Consultar", command=consultar_cep)
+    consultar_button.pack()
+
+tela_inicio()
 
 # Função para validar o login
 def tela_cadastro():
@@ -199,11 +255,12 @@ def enviar_dados():
 
     if resposta.status_code == 200:
         messagebox.showinfo("Sucesso", "Dados enviados com sucesso!", parent=janela)
+        notebook.select(login)  # Redireciona para a aba de login
     else:
         messagebox.showerror("Erro", "Erro ao enviar dados: " + resposta.text, icon="error", parent=janela)
 
 
-botao_enviar = tk.Button(cadastro, text="Enviar", command=enviar_dados)
+botao_enviar = tk.Button(cadastro, text="Enviar", command=lambda: enviar_dados())
 botao_enviar.grid(row=6, column=1, padx=10, pady=10)
 
 tela_cadastro()
